@@ -2,18 +2,20 @@ const shoppingCart = {
     items: [], // массив товаров  item => name, price, quantity
     totalCost: 0, // итогова стоимость всех продуктов
     addItem(item) {
-        const existingItem = this.items.find(e => e.name === item.name);
+        const existingItem = this.items.find((e) => e.name === item.name);
         if (existingItem) {
             existingItem.quantity += item.quantity;
-            existingItem.price = existingItem.price < item.price
-                ? item.price : existingItem.price
+            existingItem.price =
+                existingItem.price < item.price
+                    ? item.price
+                    : existingItem.price;
         } else {
             this.items.push(item);
         }
         this.updateTotalCost();
     },
     removeItem(itemName) {
-        const index = this.items.findIndex(elem => elem.name === itemName);
+        const index = this.items.findIndex((elem) => elem.name === itemName);
         if (index !== -1) {
             this.items.splice(index, 1);
             this.updateTotalCost();
@@ -23,8 +25,8 @@ const shoppingCart = {
         this.totalCost = this.items.reduce((acc, item) => {
             return acc + item.price * item.quantity;
         }, 0);
-    }
-}
+    },
+};
 
 // const add = document.getElementById('add');
 // '     555     '.trim() => '555'
@@ -39,30 +41,69 @@ function statsHandler() {
     // Максимальная цена
     // Минимальная цена
     // Средняя цена
+
+    if (shoppingCart.items.length) {
+        const itemsQuantity = shoppingCart.items.length;
+        //данное решение не самое оптимальное
+        // const itemsSortByPrise = shoppingCart.items.sort((a, b) => a.price - b.price);
+        // const minPrice = itemsSortByPrise[0];
+        // const maxPrice = itemsSortByPrise[itemsQuantity - 1];
+
+        const minPrice = shoppingCart.items.reduce(
+            (min, item) => (item.price < min ? item.price : min),
+            shoppingCart.items.length ? Number.MAX_VALUE : 0
+        );
+        const maxPrice = shoppingCart.items.reduce(
+            (max, item) => (item.price > max ? item.price : max),
+            0
+        );
+
+        const totalQuantity = shoppingCart.items.reduce(
+            (total, item) => total + item.quantity,
+            0
+        );
+        const totalCoast = shoppingCart.totalCost;
+
+        const avgPrice = totalCoast / totalQuantity;
+
+        statsOur.innerHTML = `
+                <li>Number of items: ${itemsQuantity}</li>
+                <li>Total Cost ${totalCoast}</li>
+                <li>Total Quantity: ${totalQuantity}</li>
+                <li>Min Prise: ${minPrice}</li>
+                <li>Max Price: ${maxPrice}</li>
+                <li>Avg Price${avgPrice}</li>
+                `;
+    } else {
+        statsOur.innerHTML = `<p>The shopping cart is empty</p>`;
+    }
 }
 
 function addHandler() {
-    shoppingCart.addItem({
-        name: productName.value.trim(),
-        price: +price.value.trim(),
-        quantity: +quantity.value.trim()
-    })
+    if (
+        productName.value.trim() &&
+        price.value.trim() &&
+        quantity.value.trim()
+    ) {
+        shoppingCart.addItem({
+            name: productName.value.trim(),
+            price: +price.value.trim(),
+            quantity: +quantity.value.trim(),
+        });
 
-    productList.innerHTML = '';
+        productList.innerHTML = "";
 
-    shoppingCart.items.forEach(e => {
-        const li = document.createElement('li');
-        li.textContent = `
+        shoppingCart.items.forEach((e) => {
+            const li = document.createElement("li");
+            li.textContent = `
             Product name: ${e.name},
             Product price: ${e.price},
             Quantity of product: ${e.quantity},
         `;
-        productList.appendChild(li);
-    })
+            productList.appendChild(li);
+        });
+        productName.value = '';
+        price.value = '';
+        quantity.value = '';
+    }
 }
-
-const item = {
-    name: 'Alice',
-
-}
-
