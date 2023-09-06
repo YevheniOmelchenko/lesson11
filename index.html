@@ -4,8 +4,8 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="./style.css" />
-        <script src="./script.js"></script>
-        <title>Object / array / practice</title>
+        <script src="./script.js" defer></script>
+        <title>Object / array practice</title>
     </head>
     <body>
         <div class="container">
@@ -15,29 +15,29 @@
                 type="text"
                 placeholder="Enter product name..."
             />
+
             <label for="price">Price:</label>
             <input
                 type="text"
                 id="price"
                 placeholder="Enter price of product..."
             />
-            <label for="quantity">Quantity</label>
+
+            <label for="quantity">Quantity:</label>
             <input
                 type="text"
                 id="quantity"
-                placeholder="Enter quantity of product..."
+                placeholder="Enter quantity of products..."
             />
 
-            <button id="add">Добавить</button>
-            <button id="stats">Статистика</button>
+            <div class="btn">
+                <button id="add">Добавить</button>
+                <button id="stats">Статистика</button>
+            </div>
         </div>
 
-        <ol id="productList">  
-             
-        </ol>
+        <ol id="productList"></ol>
 
-        <ol id="statsOur">
-
-        </ol>
+        <ol id="statsOur"></ol>
     </body>
 </html>
